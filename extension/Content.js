@@ -984,8 +984,20 @@ let popup_css = css`
 let create_style_rule = (root = document) => {
   let css_text = css`
     [data-${fullscreen_parent}] {
-      /* This thing is css black magic */
-      all: initial !important;
+      /* Neutralize only the properties that form a containing block for
+         position: fixed (so the iframe can span the viewport) and win z-index.
+         Avoid 'all: initial' here because it collapses ancestor layout, which
+         confuses in-page controllers that observe their own wrapper (e.g.
+         Google search's inline-video controller, which then auto-pauses the
+         embedded YouTube player on every state change). */
+      transform: none !important;
+      perspective: none !important;
+      filter: none !important;
+      backdrop-filter: none !important;
+      clip-path: none !important;
+      mask: none !important;
+      contain: none !important;
+      will-change: auto !important;
       z-index: ${max_z_index} !important;
 
       /* Debugging */
