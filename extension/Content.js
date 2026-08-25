@@ -1080,6 +1080,37 @@ let hide_watch_on_youtube_button = () => {
 hide_watch_on_youtube_button();
 
 /**
+ * Youtube red is a give-away all by itself, so paint the progress bar cyan.
+ * The classic player styles it with `ytp-` classes, the newer one with `yt`
+ * prefixed ones; the wildcards are there because those newer names get
+ * shuffled around now and then.
+ */
+let recolor_progress_bar = () => {
+  let progress_color = "#00e5ff";
+
+  let css_text = css`
+    .ytp-swatch-background-color,
+    .ytp-play-progress,
+    .ytp-scrubber-button,
+    .ytProgressBarLineProgressBarPlayed,
+    .ytProgressBarPlayheadProgressBarPlayheadDot,
+    [class*="ProgressBarPlayed"],
+    [class*="ProgressBarPlayheadDot"] {
+      /* Shorthand, not background-color: the newer player paints the played
+         line with a red-to-pink gradient that would otherwise cover it */
+      background: ${progress_color} !important;
+    }
+  `;
+
+  let styleEl = document.createElement("style");
+  styleEl.appendChild(document.createTextNode(css_text));
+  // We run at document_start, so there isn't always a <head> yet
+  (document.head ?? document.documentElement).appendChild(styleEl);
+};
+
+recolor_progress_bar();
+
+/**
  * @param {HTMLElement} element
  */
 const parent_elements = function* (element) {
