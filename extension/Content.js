@@ -1058,6 +1058,28 @@ let create_style_rule = (root = document) => {
 };
 
 /**
+ * Youtube's embedded player advertises itself with a "Watch on YouTube" button:
+ * in the top bar while playing, and again on the pause and ended overlays.
+ * This content script also runs inside the embed frame, so just hide it there.
+ */
+let hide_watch_on_youtube_button = () => {
+  let css_text = css`
+    .watch-on-youtube-button-wrapper,
+    .ytp-watch-on-youtube-button,
+    a.ytp-impression-link {
+      display: none !important;
+    }
+  `;
+
+  let styleEl = document.createElement("style");
+  styleEl.appendChild(document.createTextNode(css_text));
+  // We run at document_start, so there isn't always a <head> yet
+  (document.head ?? document.documentElement).appendChild(styleEl);
+};
+
+hide_watch_on_youtube_button();
+
+/**
  * @param {HTMLElement} element
  */
 const parent_elements = function* (element) {
