@@ -1089,13 +1089,20 @@ let recolor_progress_bar = () => {
   let progress_color = "#00e5ff";
 
   let css_text = css`
+    /* Classic player */
     .ytp-swatch-background-color,
     .ytp-play-progress,
     .ytp-scrubber-button,
+    /* Newer player: the plain bar, and the chaptered one */
     .ytProgressBarLineProgressBarPlayed,
     .ytProgressBarPlayheadProgressBarPlayheadDot,
+    .ytChapteredProgressBarChapteredPlayerBarChapterSeen,
+    .ytChapteredProgressBarChapteredPlayerBarFill,
+    /* The same, for whenever those names get shuffled around again */
     [class*="ProgressBarPlayed"],
-    [class*="ProgressBarPlayheadDot"] {
+    [class*="ProgressBarPlayheadDot"],
+    [class*="ChapteredPlayerBarChapterSeen"],
+    [class*="ChapteredPlayerBarFill"] {
       /* Shorthand, not background-color: the newer player paints the played
          line with a red-to-pink gradient that would otherwise cover it */
       background: ${progress_color} !important;
